@@ -6,6 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "startWithoutCache": "react-native start --reset-cache",
     "test": "jest",
     "precommit": "lint-staged",
     "prepare": "husky install",
@@ -14,11 +15,14 @@
   "dependencies": {
     "@react-native-firebase/app": "^16.4.6",
     "@react-navigation/bottom-tabs": "^6.4.3",
+    "@react-navigation/drawer": "^6.5.3",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
     "@react-navigation/stack": "^6.3.7",
     "react": "18.1.0",
     "react-native": "0.70.6",
+    "react-native-gesture-handler": "^2.8.0",
+    "react-native-reanimated": "^2.13.0",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-vector-icons": "^9.2.0"
