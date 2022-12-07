@@ -7,7 +7,7 @@ export type RootTabsParamsList = {
 };
 export type RootDrawerStackList = {
   'About us': undefined;
-  Services: undefined;
+  Home: undefined;
 };
 
 export type ServicesPageProps = NativeStackScreenProps<RootTabsParamsList, 'Services'>;

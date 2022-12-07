@@ -7,9 +7,9 @@ const Drawer = createDrawerNavigator<RootDrawerStackList>();
 
 export const DrawerStack = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="About us" component={AboutUsScene} />
-      <Drawer.Screen name="Services" component={HomeTabs} />
+      <Drawer.Screen name="Home" component={HomeTabs} />
     </Drawer.Navigator>
   );
 };
