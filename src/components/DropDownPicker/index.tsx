@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { DropPickerProps } from 'components/DropDownPicker/types';
 import { styles } from 'components/DropDownPicker/styles';
-import { ActivityIndicator, FlatList, Text, TouchableHighlight, View } from 'react-native';
+import { ActivityIndicator, FlatList, Modal, Text, TouchableHighlight, View } from 'react-native';
 import IconEntypo from 'react-native-vector-icons/Entypo';
+import { ModalOpacity } from 'components/ModalOpacity';
 
 export const DropPicker = <T,>({
   items,
@@ -49,8 +50,13 @@ export const DropPicker = <T,>({
           <IconEntypo name="select-arrows" size={15} color="#ffffff" />
         </View>
       </TouchableHighlight>
-      {isOpen &&
-        (!items.length ? (
+      <ModalOpacity
+        visible={isOpen}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={handleOpenList(false)}
+      >
+        {!items.length ? (
           <View style={[styles.list, styles.loading, styles.pickerItemWrapperBackground]}>
             {isLoading ? (
               <ActivityIndicator size="large" color="#0000ff" />
@@ -73,7 +79,8 @@ export const DropPicker = <T,>({
               </TouchableHighlight>
             )}
           />
-        ))}
+        )}
+      </ModalOpacity>
     </View>
   );
 };

@@ -28,9 +28,6 @@ export const styles = StyleSheet.create({
     color: '#ffffff'
   },
   list: {
-    position: 'absolute',
-    top: 32,
-    left: 0,
     width: 300,
     height: 90
   }
