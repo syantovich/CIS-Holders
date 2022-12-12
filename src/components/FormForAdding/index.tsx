@@ -4,6 +4,7 @@ import { RootStateType } from 'src/store';
 import { DropPicker } from 'components/DropDownPicker';
 import { useEffect } from 'react';
 import { getCategoriesFetch } from 'store/slices/categories';
+import ImageInput from 'components/ImageInput';
 
 export const FormForAdding = () => {
   const { categories, isLoading } = useSelector((state: RootStateType) => state.categories);
@@ -18,6 +19,7 @@ export const FormForAdding = () => {
       <CustomTextInput placeholder="Description" maxLength={500} />
       <CustomTextInput placeholder="Name of the place" />
       <DropPicker items={categories} isLoading={isLoading} />
+      <ImageInput />
     </>
   );
 };
