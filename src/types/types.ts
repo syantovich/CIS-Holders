@@ -8,3 +8,7 @@ export type PlaceType = {
 export type CategoryType = {
   name: string;
 };
+export type CategoryListType = {
+  title: string;
+  data: PlaceType[];
+};

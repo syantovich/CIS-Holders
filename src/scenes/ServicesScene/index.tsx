@@ -1,23 +1,32 @@
-import { View, Text, FlatList } from 'react-native';
-import { useEffect, useState } from 'react';
-import db from 'services/Db';
-import { PlaceType } from 'types/types';
-import { GroupPlaces } from 'components/GroupPlaces/GroupPlaces';
+import { View, SectionList, ActivityIndicator } from 'react-native';
+import { useEffect } from 'react';
+import Index from 'components/PlaceItem';
+import HeaderItem from 'components/HeaderItem';
+import styles from 'scenes/ServicesScene/styles';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPlacesFetch } from 'store/slices/places';
+import { RootStateType } from 'src/store';
 
-function HomeScreen() {
-  const [places, setPlaces] = useState<PlaceType[][]>([]);
+function ListScreen() {
+  const { places, isLoading } = useSelector((state: RootStateType) => state.places);
+  const dispatch = useDispatch();
   useEffect(() => {
-    const fetching = async () => {
-      const result = await db.getPlaces();
-      setPlaces(result);
-    };
-    fetching();
+    dispatch(getPlacesFetch());
   }, []);
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <FlatList data={places} renderItem={GroupPlaces} keyExtractor={(item) => item[0].type} />
+  return !isLoading ? (
+    <View style={styles.container}>
+      <SectionList
+        sections={places}
+        keyExtractor={(item) => item.id}
+        renderItem={Index}
+        renderSectionHeader={HeaderItem}
+      />
+    </View>
+  ) : (
+    <View style={[styles.containerLoad, styles.horizontal]}>
+      <ActivityIndicator size="large" color="#0000ff" />
     </View>
   );
 }
 
-export default HomeScreen;
+export default ListScreen;
