@@ -8,6 +8,8 @@ const Index = ({ item }: PlaceItemProps) => {
       <Text>{item.name}</Text>
       <Text>{item.description}</Text>
       <Text>{item.address}</Text>
+      <Text>{item.coordinates.latitude}</Text>
+      <Text>{item.coordinates.longitude}</Text>
     </View>
   );
 };

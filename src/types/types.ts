@@ -3,6 +3,7 @@ export type PlaceType = {
   name: string;
   address: string;
   description: string;
+  coordinates: { latitude: number; longitude: number };
   type: string;
 };
 export type CategoryType = {

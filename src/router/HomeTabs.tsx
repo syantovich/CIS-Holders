@@ -38,13 +38,17 @@ export const HomeTabs = () => {
         tabBarInactiveTintColor: 'gray'
       })}
     >
-      <Tabs.Screen name="Services" component={ServicesScene} />
+      <Tabs.Screen name="Services" component={ServicesScene} options={{ headerShown: false }} />
       <Tabs.Screen
         name="Add"
         component={AddScene}
-        options={{ title: '', headerTitle: undefined }}
+        options={{
+          title: '',
+          headerTitle: undefined,
+          headerShown: false
+        }}
       />
-      <Tabs.Screen name="Map" component={MapScene} />
+      <Tabs.Screen name="Map" component={MapScene} options={{ headerShown: false }} />
     </Tabs.Navigator>
   );
 };
