@@ -13,3 +13,7 @@ export type CategoryListType = {
   title: string;
   data: PlaceType[];
 };
+export type CoordinatesType = {
+  latitude: number | string;
+  longitude: number | string;
+};

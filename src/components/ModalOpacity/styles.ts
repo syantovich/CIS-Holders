@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
     width: '100%',
     height: '100%',
     flex: 1,
@@ -16,8 +15,6 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 30,
     borderRadius: 10,
-    width: 'auto',
-    height: 'auto',
     backgroundColor: '#ffffff'
   }
 });

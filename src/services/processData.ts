@@ -18,10 +18,7 @@ class ProcessDataClass {
     return results;
   }
 
-  async getArrayCategoriesByName(categories: FirebaseFirestoreTypes.QuerySnapshot) {
-    await new Promise((resolve) => {
-      setTimeout(() => resolve(5000), 5000);
-    });
+  getArrayCategoriesByName(categories: FirebaseFirestoreTypes.QuerySnapshot) {
     const nameCategories: string[] = [];
     categories.forEach((dataSnapshot) => {
       nameCategories.push(dataSnapshot.data().name);

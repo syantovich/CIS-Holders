@@ -4,6 +4,10 @@ import { styles } from 'components/DropDownPicker/styles';
 import { ActivityIndicator, FlatList, Modal, Text, TouchableHighlight, View } from 'react-native';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import { ModalOpacity } from 'components/ModalOpacity';
+import { useDispatch } from 'react-redux';
+import { closeModal, openModal } from 'store/slices/modal';
+import { DropDownOptions } from 'components/DropDownOptions';
+import { useFormContext } from 'react-hook-form';
 
 export const DropPicker = <T,>({
   items,
@@ -14,28 +18,35 @@ export const DropPicker = <T,>({
   title,
   helpedText
 }: DropPickerProps<T>) => {
-  const showValue = (item: T) => (renderValue ? renderValue(item) : item);
-  const showItem = (item: T) => (renderItem ? renderItem(item) : item);
-  const showKey = (item: T) => (renderKey ? renderKey(item) : item);
   const showHelpedText = helpedText || 'Need to select';
   const [value, setValue] = useState<string | null | number | T>(null);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOpenList = (newOpen?: boolean) => () => {
-    const valueToSet = newOpen === undefined ? !isOpen : newOpen;
-    setIsOpen(valueToSet);
+  const dispatch = useDispatch();
+  const { setValue: setFormValue } = useFormContext();
+  const handleSetValue = (item: T | number | string) => {
+    setValue(item);
+    setFormValue('type', item);
   };
 
-  const handleSetValue = (item: T | string | number) => () => {
-    setValue(item);
-    setIsOpen(false);
+  const handleOpenList = () => {
+    const children = (
+      <DropDownOptions
+        items={items}
+        isLoading={isLoading}
+        setValue={handleSetValue}
+        renderItem={renderItem}
+        renderKey={renderKey}
+        renderValue={renderValue}
+      />
+    );
+
+    dispatch(openModal({ children }));
   };
 
   return (
     <View style={{ flexDirection: 'column', justifyContent: 'flex-end', position: 'relative' }}>
       <TouchableHighlight
         style={[styles.pickerItemWrapper, styles.pickerItemWrapperBackground]}
-        onPress={handleOpenList()}
+        onPress={handleOpenList}
       >
         <View
           style={[
@@ -50,37 +61,6 @@ export const DropPicker = <T,>({
           <IconEntypo name="select-arrows" size={15} color="#ffffff" />
         </View>
       </TouchableHighlight>
-      <ModalOpacity
-        visible={isOpen}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={handleOpenList(false)}
-      >
-        {!items.length ? (
-          <View style={[styles.list, styles.loading, styles.pickerItemWrapperBackground]}>
-            {isLoading ? (
-              <ActivityIndicator size="large" color="#0000ff" />
-            ) : (
-              <Text>No fields to select</Text>
-            )}
-          </View>
-        ) : (
-          <FlatList
-            data={items}
-            style={styles.list}
-            renderItem={({ item }) => (
-              <TouchableHighlight
-                style={[styles.pickerItemWrapper, styles.pickerItemWrapperBackground]}
-                onPress={handleSetValue(showValue(item))}
-              >
-                <Text style={[styles.pickerItemColor, styles.paddingItem]}>
-                  {renderItem ? renderItem(item) : `${item}`}
-                </Text>
-              </TouchableHighlight>
-            )}
-          />
-        )}
-      </ModalOpacity>
     </View>
   );
 };

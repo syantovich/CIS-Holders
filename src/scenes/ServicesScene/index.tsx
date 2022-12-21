@@ -6,12 +6,14 @@ import styles from 'scenes/ServicesScene/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPlacesFetch } from 'store/slices/places';
 import { RootStateType } from 'src/store';
+import { getCategoriesFetch } from 'store/slices/categories';
 
 function ListScreen() {
   const { places, isLoading } = useSelector((state: RootStateType) => state.places);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPlacesFetch());
+    dispatch(getCategoriesFetch());
   }, []);
   return !isLoading ? (
     <View style={styles.container}>

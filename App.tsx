@@ -11,10 +11,12 @@
 import Router from './src/router';
 import { Provider } from 'react-redux';
 import store from './src/store';
+import { ModalOpacity } from 'components/ModalOpacity';
 
 const App = () => {
   return (
     <Provider store={store}>
+      <ModalOpacity />
       <Router />
     </Provider>
   );
