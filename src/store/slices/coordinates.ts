@@ -44,9 +44,15 @@ const coordinatesSlice = createSlice({
       };
 
       state.textCoordinates = action.payload;
+    },
+    resetCoords(state) {
+      state.coordinates = initialState.coordinates;
+      state.textCoordinates = initialState.coordinates;
+      state.coordinatesSaved = initialState.coordinatesSaved;
+      state.isMapOpen = initialState.isMapOpen;
     }
   }
 });
-export const { setIsMapOpen, pickCoordinates, saveCoords, editSavedCoords } =
+export const { setIsMapOpen, pickCoordinates, saveCoords, editSavedCoords, resetCoords } =
   coordinatesSlice.actions;
 export default coordinatesSlice.reducer;

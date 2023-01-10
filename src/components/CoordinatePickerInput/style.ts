@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
   wrapperIcon: {
     width: 50,
+    marginTop: 18,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

@@ -6,6 +6,7 @@ import coordinatesReducer from 'store/slices/coordinates';
 import modalReducer from 'store/slices/modal';
 import placesSaga from 'store/sagas/places';
 import categoriesSaga from 'store/sagas/categories';
+import addPlacesSaga from 'store/sagas/addPlaces';
 
 const saga = createSagaMiddleware();
 
@@ -18,8 +19,10 @@ const store = configureStore({
   },
   middleware: [saga]
 });
+
 saga.run(placesSaga);
 saga.run(categoriesSaga);
+saga.run(addPlacesSaga);
 
 export type RootStateType = ReturnType<typeof store.getState>;
 export default store;

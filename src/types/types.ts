@@ -1,11 +1,13 @@
-export type PlaceType = {
-  id: string;
+export interface IPlaceItem {
   name: string;
-  address: string;
   description: string;
-  coordinates: { latitude: number; longitude: number };
+  image: { uri?: string };
+  coordinates: { latitude?: number; longitude?: number };
   type: string;
-};
+}
+export interface PlaceType extends IPlaceItem {
+  id: string;
+}
 export type CategoryType = {
   name: string;
 };

@@ -1,29 +1,33 @@
-import { TextInput } from 'react-native';
+import { TextInput, View } from 'react-native';
 import styles from 'components/CustomTextInput/styles';
 import { CustomTextInputProps } from 'components/CustomTextInput/types';
-import { useFormContext, Controller, useController } from 'react-hook-form';
+import { useFormContext, Controller } from 'react-hook-form';
+import ErrorWrapper from 'components/ErrorWrapper';
 
 const CustomTextInput = (props: CustomTextInputProps) => {
   const { control } = useFormContext();
-  // const {}=useController({name:props.nameToControl,control})
-  return props.nameToControl ? (
+  return (
     <Controller
       control={control}
       name={props.nameToControl}
+      rules={{ required: true }}
       render={({ field: { value, onChange }, fieldState: { error } }) => {
         return (
-          <TextInput
-            placeholderTextColor="#fff"
-            {...props}
-            onChange={props.onChange}
-            onChangeText={onChange}
-            style={[styles.textInput, props.style]}
-          />
+          <ErrorWrapper error={error} message="This field is required" label={props.label}>
+            <View style={styles.wrapperInput}>
+              <TextInput
+                placeholderTextColor="#fff"
+                value={value}
+                {...props}
+                onChangeText={onChange}
+                onChange={props.onChange}
+                style={[styles.textInput, props.style]}
+              />
+            </View>
+          </ErrorWrapper>
         );
       }}
     />
-  ) : (
-    <TextInput placeholderTextColor="#fff" {...props} style={[styles.textInput, props.style]} />
   );
 };
 export default CustomTextInput;

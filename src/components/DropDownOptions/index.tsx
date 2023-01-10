@@ -3,7 +3,6 @@ import { styles } from 'components/DropDownPicker/styles';
 import { DropDownOptionsProps } from 'components/DropDownOptions/types';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'store/slices/modal';
-import { useFormContext } from 'react-hook-form';
 
 export const DropDownOptions = <T,>({
   items,
@@ -18,7 +17,7 @@ export const DropDownOptions = <T,>({
   const showKey = (item: T) => (renderKey ? renderKey(item) : item);
 
   const dispatch = useDispatch();
-  const methods = useFormContext();
+
   const handleSetValue = (item: T | string | number) => () => {
     setValue(item);
     dispatch(closeModal());

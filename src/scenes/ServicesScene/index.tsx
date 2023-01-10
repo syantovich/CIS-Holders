@@ -1,27 +1,40 @@
-import { View, SectionList, ActivityIndicator } from 'react-native';
+import { View, SectionList, ActivityIndicator, RefreshControl } from 'react-native';
 import { useEffect } from 'react';
-import Index from 'components/PlaceItem';
 import HeaderItem from 'components/HeaderItem';
 import styles from 'scenes/ServicesScene/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPlacesFetch } from 'store/slices/places';
 import { RootStateType } from 'src/store';
 import { getCategoriesFetch } from 'store/slices/categories';
+import PlaceItem from 'components/PlaceItem';
 
 function ListScreen() {
   const { places, isLoading } = useSelector((state: RootStateType) => state.places);
   const dispatch = useDispatch();
-  useEffect(() => {
+  const fetchingData = () => {
     dispatch(getPlacesFetch());
     dispatch(getCategoriesFetch());
+  };
+  useEffect(() => {
+    fetchingData();
   }, []);
   return !isLoading ? (
     <View style={styles.container}>
       <SectionList
         sections={places}
         keyExtractor={(item) => item.id}
-        renderItem={Index}
+        renderItem={PlaceItem}
         renderSectionHeader={HeaderItem}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={() => {
+              console.log('refreshing');
+              fetchingData();
+            }}
+          />
+        }
+        refreshing={true}
       />
     </View>
   ) : (

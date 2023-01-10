@@ -1,11 +1,11 @@
 import { CustomMapProps } from 'components/CustomMap/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStateType } from 'src/store';
-import { ReactNode, useState } from 'react';
 import MapView, { Marker, MarkerDragStartEndEvent, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, SectionList, StyleSheet, View } from 'react-native';
 import { pickCoordinates, saveCoords } from 'store/slices/coordinates';
 import { closeModal } from 'store/slices/modal';
+import { ReactNode } from 'react';
 
 const CustomMap = ({ isChoose, actionAfterSave }: CustomMapProps) => {
   const { places } = useSelector((state: RootStateType) => state.places);
@@ -33,16 +33,10 @@ const CustomMap = ({ isChoose, actionAfterSave }: CustomMapProps) => {
         flexDirection: 'column'
       }}
     >
-      <View
-        style={{
-          ...StyleSheet.absoluteFillObject
-        }}
-      >
+      <View style={StyleSheet.absoluteFillObject}>
         <MapView
           provider={PROVIDER_GOOGLE}
-          style={{
-            ...StyleSheet.absoluteFillObject
-          }}
+          style={StyleSheet.absoluteFillObject}
           userInterfaceStyle="dark"
           showsScale
           showsMyLocationButton
@@ -54,8 +48,8 @@ const CustomMap = ({ isChoose, actionAfterSave }: CustomMapProps) => {
               acc.push(
                 <Marker
                   coordinate={{
-                    latitude: place.coordinates.latitude,
-                    longitude: place.coordinates.longitude
+                    latitude: place.coordinates.latitude || 0,
+                    longitude: place.coordinates.longitude || 0
                   }}
                   title={place.name}
                   key={place.id}
@@ -66,7 +60,10 @@ const CustomMap = ({ isChoose, actionAfterSave }: CustomMapProps) => {
           }, [])}
           {coordinates && isChoose && (
             <Marker
-              coordinate={{ latitude: +coordinates.latitude, longitude: +coordinates.longitude }}
+              coordinate={{
+                latitude: +coordinates.latitude,
+                longitude: +coordinates.longitude
+              }}
             />
           )}
         </MapView>

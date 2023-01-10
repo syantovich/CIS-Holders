@@ -17,42 +17,28 @@ import { useFormContext } from 'react-hook-form';
 import { CoordinatesType } from 'types/types';
 
 export const CoordinatePickerInput = () => {
-  const { textCoordinates, coordinates } = useSelector((state: RootStateType) => state.coordinates);
+  const { textCoordinates } = useSelector((state: RootStateType) => state.coordinates);
   const dispatch = useDispatch();
-  const { control, setValue } = useFormContext();
+  const { setValue } = useFormContext();
 
   const handleChange =
     (type: EnumCoordinates) => (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
       const number = +e.nativeEvent.text;
       const text = e.nativeEvent.text;
-      if (
-        type === EnumCoordinates.lat &&
-        ((number <= 180 && number >= -180) || text === '+' || text === '-' || text === '.')
-      ) {
+      const border = type === EnumCoordinates.long ? 90 : 180;
+      if ((number <= border && number >= -border) || text === '+' || text === '-' || text === '.') {
         dispatch(
           editSavedCoords({
-            latitude: text,
-            longitude: textCoordinates?.longitude || 0
+            longitude: textCoordinates?.longitude || 0,
+            latitude: textCoordinates?.latitude || 0,
+            [type]: text
           })
         );
-        setValue('coordinates.latitude', number || 0);
-      }
-      if (
-        type === EnumCoordinates.long &&
-        ((number < 90 && number > -90) || text === '+' || text === '-' || text === '.')
-      ) {
-        dispatch(
-          editSavedCoords({
-            longitude: text,
-            latitude: textCoordinates?.latitude || 0
-          })
-        );
-        console.log('set', number);
-        setValue('coordinates.longitude', number || 0);
+        setValue(`coordinates.${type}`, number || 0);
       }
     };
-  const handleActionAfterSave = (coords: CoordinatesType) => {
-    setValue('coordinates', coords);
+  const handleActionAfterSave = ({ latitude, longitude }: CoordinatesType) => {
+    setValue('coordinates', { latitude: +latitude, longitude: +longitude });
   };
   const handlePickCoordinate = () => {
     dispatch(
@@ -69,11 +55,17 @@ export const CoordinatePickerInput = () => {
     <View style={styles.container}>
       <View style={styles.wrapperInputs}>
         <CustomTextInput
+          label="Longitude"
+          keyboardType="number-pad"
+          nameToControl="coordinates.longitude"
           onChange={handleChange(EnumCoordinates.long)}
           style={styles.input}
           value={`${textCoordinates?.longitude || ''}`}
         />
         <CustomTextInput
+          label="Latitude"
+          keyboardType="number-pad"
+          nameToControl="coordinates.latitude"
           onChange={handleChange(EnumCoordinates.lat)}
           value={`${textCoordinates?.latitude || ''}`}
         />

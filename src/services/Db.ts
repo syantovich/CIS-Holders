@@ -1,6 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { Asset } from 'react-native-image-picker';
+import { IPlaceItem, PlaceType } from 'types/types';
+import uuid from 'react-native-uuid';
 
 class DbConstructor {
   db = firestore();
@@ -31,6 +33,13 @@ class DbConstructor {
   deleteImage = async (fileName: string) => {
     const reference = storage().ref(`placeimage/${fileName}`);
     return reference.delete();
+  };
+
+  addItem = async (item: IPlaceItem) => {
+    const id = uuid.v4();
+    const addingObject = { ...item, id };
+    await this.db.collection('places').doc(`${id}`).set(addingObject);
+    return addingObject;
   };
 }
 const db = new DbConstructor();

@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: 300,
     backgroundColor: '#000',
-    padding: 5,
+    padding: 10,
     borderRadius: 10
   },
   fileName: {
