@@ -1,4 +1,4 @@
-import { CategoryListType, PlaceType } from 'types/types';
+import { CategoryListType, IPlaceType } from 'types/types';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 class ProcessDataClass {
@@ -6,7 +6,7 @@ class ProcessDataClass {
     const results: CategoryListType[] = [];
     let previousType: undefined | string;
     places.forEach((e: any) => {
-      const data = e.data() as PlaceType;
+      const data = e.data() as IPlaceType;
       if (previousType !== data.type) {
         results.push({ title: data.type, data: [data] });
       } else {

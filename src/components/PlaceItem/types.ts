@@ -1,5 +1,5 @@
-import { PlaceType } from 'types/types';
+import { IPlaceType } from 'types/types';
 
 export type PlaceItemProps = {
-  item: PlaceType;
+  item: IPlaceType;
 };

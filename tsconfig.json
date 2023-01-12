@@ -16,7 +16,6 @@
       "types/*": ["src/types/*"],
       "hooks/*": ["src/utils/hooks/*"],
       "helpers/*": ["src/utils/helpers/*"],
-      "src/*": ["src/*"]
     },
     /* Completeness */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */

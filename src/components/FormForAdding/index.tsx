@@ -8,7 +8,6 @@ import { Button, ScrollView, View } from 'react-native';
 import styles from 'components/FormForAdding/styles';
 import { useForm, FormProvider } from 'react-hook-form';
 import { IPlaceItem } from 'types/types';
-import db from 'services/Db';
 import { resetCoords } from 'store/slices/coordinates';
 import { addPlace } from 'store/slices/places';
 
@@ -28,7 +27,6 @@ export const FormForAdding = () => {
     dispatch(resetCoords());
   };
   const handleSubmit = (data: IPlaceItem) => {
-    console.log(data);
     dispatch(addPlace(data));
     clearForm();
   };

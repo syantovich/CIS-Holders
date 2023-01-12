@@ -24,7 +24,6 @@ class DbConstructor {
     }
     ref = ref.orderBy(value, direction);
     if (min) {
-      console.log(min);
       ref = ref.where('date', '>', min);
     }
     if (max) {
