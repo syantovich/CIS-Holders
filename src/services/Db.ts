@@ -1,7 +1,7 @@
-import firestore from '@react-native-firebase/firestore';
+import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { Asset } from 'react-native-image-picker';
-import { IPlaceItem, PlaceType } from 'types/types';
+import { FilteredFieldsType, IPlaceItem, IPlaceType } from 'types/types';
 import uuid from 'react-native-uuid';
 
 class DbConstructor {
@@ -12,8 +12,26 @@ class DbConstructor {
     return categories;
   };
 
-  getPlaces = async () => {
-    const result = await this.db.collection('places').orderBy('type', 'asc').get();
+  getPlaces = async ({
+    arrayToFilter,
+    date: { min, max },
+    orderBy: { value, direction }
+  }: FilteredFieldsType) => {
+    console.log(value, direction);
+    let ref = this.db.collection<IPlaceType>('places') as FirebaseFirestoreTypes.Query<IPlaceType>;
+    if (arrayToFilter.length !== 0) {
+      ref = ref.where('type', 'in', arrayToFilter);
+    }
+    ref = ref.orderBy(value, direction);
+    if (min) {
+      console.log(min);
+      ref = ref.where('date', '>', min);
+    }
+    if (max) {
+      ref = ref.where('date', '<', max);
+    }
+    const result = ref.get();
+
     return result;
   };
 
@@ -21,7 +39,7 @@ class DbConstructor {
     if (asset.uri) {
       try {
         const reference = storage().ref(`/placeimage/${asset.fileName}`);
-        const res = await reference.putFile(asset.uri);
+        await reference.putFile(asset.uri);
         const downloadUrl = await reference.getDownloadURL();
         return { uri: downloadUrl, fileName: asset.fileName };
       } catch (e) {
@@ -37,7 +55,7 @@ class DbConstructor {
 
   addItem = async (item: IPlaceItem) => {
     const id = uuid.v4();
-    const addingObject = { ...item, id };
+    const addingObject = { ...item, id, date: new Date() };
     await this.db.collection('places').doc(`${id}`).set(addingObject);
     return addingObject;
   };

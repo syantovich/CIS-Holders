@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CategoryListType, PlaceType } from 'types/types';
+import { CategoryListType, FilteredFieldsType, IPlaceType } from 'types/types';
+
+export type getPlacesFetchActions = {
+  payload: FilteredFieldsType;
+};
 type initialStateType = {
   places: CategoryListType[];
   isLoading: boolean;
@@ -13,7 +17,7 @@ const placesSlice = createSlice({
   name: 'places',
   initialState,
   reducers: {
-    getPlacesFetch: (state) => {
+    getPlacesFetch: (state, actions: getPlacesFetchActions) => {
       state.isLoading = true;
     },
     getPlacesSuccess: (state, actions: { payload: CategoryListType[] }) => {
@@ -26,7 +30,7 @@ const placesSlice = createSlice({
     addPlace: (state, actions) => {
       // console.log('add', actions.payload);
     },
-    pushOne: (state, actions: { payload: PlaceType }) => {
+    pushOne: (state, actions: { payload: IPlaceType }) => {
       const places = state.places;
       const index = places.findIndex((e) => e.title === actions.payload.type);
       if (index !== -1) {

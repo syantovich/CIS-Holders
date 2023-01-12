@@ -10,9 +10,10 @@ import PlaceItem from 'components/PlaceItem';
 
 function ListScreen() {
   const { places, isLoading } = useSelector((state: RootStateType) => state.places);
+  const filters = useSelector((state: RootStateType) => state.filters);
   const dispatch = useDispatch();
   const fetchingData = () => {
-    dispatch(getPlacesFetch());
+    dispatch(getPlacesFetch(filters));
     dispatch(getCategoriesFetch());
   };
   useEffect(() => {
