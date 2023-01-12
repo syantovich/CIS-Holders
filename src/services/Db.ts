@@ -12,23 +12,13 @@ class DbConstructor {
     return categories;
   };
 
-  getPlaces = async ({
-    arrayToFilter,
-    date: { min, max },
-    orderBy: { value, direction }
-  }: FilteredFieldsType) => {
+  getPlaces = async ({ arrayToFilter, orderBy: { value, direction } }: FilteredFieldsType) => {
     console.log(value, direction);
     let ref = this.db.collection<IPlaceType>('places') as FirebaseFirestoreTypes.Query<IPlaceType>;
     if (arrayToFilter.length !== 0) {
       ref = ref.where('type', 'in', arrayToFilter);
     }
     ref = ref.orderBy(value, direction);
-    if (min) {
-      ref = ref.where('date', '>', min);
-    }
-    if (max) {
-      ref = ref.where('date', '<', max);
-    }
     const result = ref.get();
 
     return result;
@@ -54,7 +44,8 @@ class DbConstructor {
 
   addItem = async (item: IPlaceItem) => {
     const id = uuid.v4();
-    const addingObject = { ...item, id, date: new Date() };
+    const name = item.name[0].toUpperCase() + item.name.slice(1);
+    const addingObject = { ...item, id, date: new Date(), name };
     await this.db.collection('places').doc(`${id}`).set(addingObject);
     return addingObject;
   };

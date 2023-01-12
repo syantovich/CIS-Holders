@@ -8,13 +8,11 @@ export type setFiltersActions = {
 
 type initialStateType = {
   arrayToFilter: string[];
-  date: { min?: Date; max?: Date };
   orderBy: OrderByType;
 };
 const initialState: initialStateType = {
   orderBy: { value: VALUES_ORDER.NAME, direction: DIRECTION_SORT.DESC },
-  arrayToFilter: [],
-  date: { min: undefined, max: undefined }
+  arrayToFilter: []
 };
 
 const filtersSlice = createSlice({
@@ -23,7 +21,6 @@ const filtersSlice = createSlice({
   reducers: {
     setFilters: (state, actions: setFiltersActions) => {
       state.arrayToFilter = actions.payload.arrayToFilter;
-      state.date = actions.payload.date;
       state.orderBy = actions.payload.orderBy;
     }
   }

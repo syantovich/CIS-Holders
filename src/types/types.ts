@@ -28,5 +28,4 @@ export type OrderByType = { value: VALUES_ORDER; direction: DIRECTION_SORT };
 export type FilteredFieldsType = {
   orderBy: OrderByType;
   arrayToFilter: string[];
-  date: { min?: Date; max?: Date };
 };

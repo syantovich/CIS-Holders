@@ -41,8 +41,8 @@ const FilterForm = () => {
               <SortBy />
               <CategoryName name="Типы" />
               <ChooseType />
-              <CategoryName name="Время создания" />
-              <TimeCreated />
+              {/*<CategoryName name="Время создания" />*/}
+              {/*<TimeCreated />*/}
               <Button title="Принять" onPress={methods.handleSubmit(handleSubmit)} />
             </View>
           </>
