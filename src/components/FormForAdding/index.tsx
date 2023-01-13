@@ -13,6 +13,7 @@ import { addPlace } from 'store/slices/places';
 
 export const FormForAdding = () => {
   const { categories, isLoading } = useSelector((state: RootStateType) => state.categories);
+  const filters = useSelector((state: RootStateType) => state.filters);
   const defaultValues: IPlaceItem = {
     coordinates: { latitude: undefined, longitude: undefined },
     image: { uri: '' },
@@ -27,7 +28,7 @@ export const FormForAdding = () => {
     dispatch(resetCoords());
   };
   const handleSubmit = (data: IPlaceItem) => {
-    dispatch(addPlace(data));
+    dispatch(addPlace({ item: data, filters }));
     clearForm();
   };
   return (

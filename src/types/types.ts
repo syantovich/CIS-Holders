@@ -13,9 +13,16 @@ export interface IPlaceType extends IPlaceItem {
   id: string;
   date: Timestamp;
 }
-export type CategoryType = {
+export interface ICategory {
   name: string;
-};
+}
+export interface ISlideInfo {
+  id: string;
+  order: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+}
 export type CategoryListType = {
   title: string;
   data: IPlaceType[];

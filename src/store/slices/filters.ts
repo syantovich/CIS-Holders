@@ -19,11 +19,12 @@ const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
+    checkFilters(state, actions: setFiltersActions) {},
     setFilters: (state, actions: setFiltersActions) => {
       state.arrayToFilter = actions.payload.arrayToFilter;
       state.orderBy = actions.payload.orderBy;
     }
   }
 });
-export const { setFilters } = filtersSlice.actions;
+export const { setFilters, checkFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;

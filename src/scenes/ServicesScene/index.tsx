@@ -3,18 +3,16 @@ import { useEffect } from 'react';
 import HeaderItem from 'components/HeaderItem';
 import styles from 'scenes/ServicesScene/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPlacesFetch } from 'store/slices/places';
 import { RootStateType } from 'src/store';
-import { getCategoriesFetch } from 'store/slices/categories';
 import PlaceItem from 'components/PlaceItem';
+import { checkFilters } from 'store/slices/filters';
 
 function ListScreen() {
   const { places, isLoading } = useSelector((state: RootStateType) => state.places);
   const filters = useSelector((state: RootStateType) => state.filters);
   const dispatch = useDispatch();
-  const fetchingData = () => {
-    dispatch(getPlacesFetch(filters));
-    dispatch(getCategoriesFetch());
+  const fetchingData = async () => {
+    dispatch(checkFilters(filters));
   };
   useEffect(() => {
     fetchingData();

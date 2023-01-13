@@ -12,6 +12,7 @@ const PlaceItem = ({ item }: PlaceItemProps) => {
       )}
       <Text>{item.coordinates.latitude}</Text>
       <Text>{item.coordinates.longitude}</Text>
+      <Text>{item.date.toDate().toISOString()}</Text>
     </View>
   );
 };

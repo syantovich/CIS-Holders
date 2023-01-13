@@ -1,17 +1,13 @@
-import { Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import CheckBox from 'components/CheckBox';
 import { Controller, useFormContext } from 'react-hook-form';
 import { DIRECTION_SORT, VALUES_ORDER } from 'constants/index';
 import styles from 'components/SortBy/styles';
-import { useState } from 'react';
+import IconsFont from 'react-native-vector-icons/FontAwesome';
 
 const SortBy = () => {
   const { control } = useFormContext();
-  const [isSwitch, setIsSwitch] = useState(false);
-  const handleSwitch = (e: any) => {
-    console.log(e);
-    setIsSwitch(!isSwitch);
-  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -42,7 +38,7 @@ const SortBy = () => {
           )}
         />
       </View>
-      <View>
+      <View style={styles.wrapperIcon}>
         <Controller
           control={control}
           name="orderBy.direction"
@@ -56,7 +52,10 @@ const SortBy = () => {
                 }
               }}
             >
-              <Text>{value === DIRECTION_SORT.ASC ? 'Убыванию' : 'Возрастанию'}</Text>
+              <IconsFont
+                name={value === DIRECTION_SORT.ASC ? 'sort-amount-asc' : 'sort-amount-desc'}
+                size={25}
+              />
             </TouchableOpacity>
           )}
         />

@@ -1,9 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CategoryListType, FilteredFieldsType, IPlaceType } from 'types/types';
 
-export type getPlacesFetchActions = {
-  payload: FilteredFieldsType;
-};
 type initialStateType = {
   places: CategoryListType[];
   isLoading: boolean;
@@ -17,7 +14,7 @@ const placesSlice = createSlice({
   name: 'places',
   initialState,
   reducers: {
-    getPlacesFetch: (state, actions: getPlacesFetchActions) => {
+    getPlacesFetch: (state, actoions: { payload: FilteredFieldsType }) => {
       state.isLoading = true;
     },
     getPlacesSuccess: (state, actions: { payload: CategoryListType[] }) => {

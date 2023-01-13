@@ -1,18 +1,18 @@
-import { CategoryListType, IPlaceType } from 'types/types';
+import { CategoryListType, IPlaceType, ISlideInfo } from 'types/types';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 class ProcessDataClass {
   placesByType(places: FirebaseFirestoreTypes.QuerySnapshot) {
     const results: CategoryListType[] = [];
-    let previousType: undefined | string;
-    places.forEach((e: any) => {
+    const storeIndex: { [key: string]: number } = {};
+    places.forEach((e: any, index) => {
       const data = e.data() as IPlaceType;
-      if (previousType !== data.type) {
-        results.push({ title: data.type, data: [data] });
+      if (data.type in storeIndex) {
+        results[storeIndex[data.type]].data.push(data);
       } else {
-        results[results.length - 1].data.push(data);
+        results.push({ title: data.type, data: [data] });
+        storeIndex[data.type] = index;
       }
-      previousType = e.data().type;
     });
 
     return results;
@@ -24,6 +24,15 @@ class ProcessDataClass {
       nameCategories.push(dataSnapshot.data().name);
     });
     return nameCategories;
+  }
+
+  getAboutUsArray(sliders: FirebaseFirestoreTypes.QuerySnapshot) {
+    const result: ISlideInfo[] = [];
+    sliders.forEach((dataSnapshot) => {
+      const data = dataSnapshot.data() as ISlideInfo;
+      result.push(data);
+    });
+    return result;
   }
 }
 const processingData = new ProcessDataClass();

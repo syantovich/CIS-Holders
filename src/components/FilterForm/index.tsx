@@ -2,12 +2,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import ChooseType from 'components/ChooseType';
 import { Button, Pressable, TouchableOpacity, View } from 'react-native';
 import IconsAnt from 'react-native-vector-icons/AntDesign';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FilteredFieldsType } from 'types/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilters } from 'store/slices/filters';
 import CategoryName from 'components/FilterForm/CategoryName';
-import TimeCreated from 'components/TimeCreated';
 import styles from 'components/FilterForm/styles';
 import SortBy from 'components/SortBy';
 import { RootStateType } from 'store/index';
@@ -25,6 +24,14 @@ const FilterForm = () => {
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
+  const handleClose = () => {
+    setIsOpen(false);
+    methods.reset(state);
+  };
+
+  useEffect(() => {
+    methods.reset(state);
+  }, [state]);
   return (
     <FormProvider {...methods}>
       <View style={styles.container}>
@@ -33,7 +40,7 @@ const FilterForm = () => {
         </TouchableOpacity>
         {isOpen && (
           <>
-            <Pressable onPress={handleOpen}>
+            <Pressable onPress={handleClose}>
               <View style={styles.allScreen} />
             </Pressable>
             <View style={styles.wrapperList}>
@@ -41,8 +48,6 @@ const FilterForm = () => {
               <SortBy />
               <CategoryName name="Типы" />
               <ChooseType />
-              {/*<CategoryName name="Время создания" />*/}
-              {/*<TimeCreated />*/}
               <Button title="Принять" onPress={methods.handleSubmit(handleSubmit)} />
             </View>
           </>
