@@ -2,7 +2,7 @@ import { Modal, View } from 'react-native';
 import styles from 'components/ModalOpacity/styles';
 import IconsAnt from 'react-native-vector-icons/AntDesign';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootStateType } from 'src/store';
+import { RootStateType } from 'store/index';
 import { closeModal } from 'store/slices/modal';
 
 export const ModalOpacity = () => {

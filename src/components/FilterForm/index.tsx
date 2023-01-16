@@ -10,6 +10,7 @@ import CategoryName from 'components/FilterForm/CategoryName';
 import styles from 'components/FilterForm/styles';
 import SortBy from 'components/SortBy';
 import { RootStateType } from 'store/index';
+import { CATEGORIES_NAME, FILTER_COLORS } from 'components/FilterForm/constants';
 
 const FilterForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,6 @@ const FilterForm = () => {
   const methods = useForm({ defaultValues });
   const dispatch = useDispatch();
   const handleSubmit = (data: FilteredFieldsType) => {
-    console.log(data);
     dispatch(setFilters(data));
   };
   const handleOpen = () => {
@@ -36,7 +36,11 @@ const FilterForm = () => {
     <FormProvider {...methods}>
       <View style={styles.container}>
         <TouchableOpacity onPress={handleOpen}>
-          <IconsAnt name="filter" size={20} color={isOpen ? 'orange' : 'black'} />
+          <IconsAnt
+            name="filter"
+            size={20}
+            color={isOpen ? FILTER_COLORS.OPEN : FILTER_COLORS.CLOSE}
+          />
         </TouchableOpacity>
         {isOpen && (
           <>
@@ -44,11 +48,14 @@ const FilterForm = () => {
               <View style={styles.allScreen} />
             </Pressable>
             <View style={styles.wrapperList}>
-              <CategoryName name="Сортировать" />
+              <CategoryName name={CATEGORIES_NAME.SORT} />
               <SortBy />
-              <CategoryName name="Типы" />
+              <CategoryName name={CATEGORIES_NAME.TYPE} />
               <ChooseType />
-              <Button title="Принять" onPress={methods.handleSubmit(handleSubmit)} />
+              <Button
+                title={CATEGORIES_NAME.CONFIRM}
+                onPress={methods.handleSubmit(handleSubmit)}
+              />
             </View>
           </>
         )}

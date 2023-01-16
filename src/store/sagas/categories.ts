@@ -1,16 +1,12 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import db from 'services/Db';
-import processingData from 'services/processData';
-import { CategoryListType } from 'types/types';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { getCategoriesSuccess } from 'store/slices/categories';
+import { DataProvider } from 'services/DataProvider';
+import { ProcessDataMappers } from '../../utils/mappers/processData';
 
 function* workerGetCategoriesFetch() {
-  const categories: FirebaseFirestoreTypes.QuerySnapshot = yield call(db.getCategories);
-  const formattedCategories: CategoryListType[] = yield processingData.getArrayCategoriesByName(
-    categories
-  );
-  yield put(getCategoriesSuccess(formattedCategories));
+  const categories: FirebaseFirestoreTypes.QuerySnapshot = yield call(DataProvider.getCategories);
+  yield put(getCategoriesSuccess(ProcessDataMappers.getArrayCategoriesByName(categories)));
 }
 
 function* placesSaga() {

@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import SliderInfoList from 'components/SliderInfoList';
+import styles from 'scenes/AboutUsScene/styles';
 
 function AboutUs() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {/*<Text>About us Screen</Text>*/}
+    <View style={styles.container}>
       <SliderInfoList />
     </View>
   );

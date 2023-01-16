@@ -6,7 +6,7 @@ export enum VALUES_ORDER {
   NAME = 'name',
   DATE = 'date'
 }
-export const STORAGE_FILTERS_KEY = '@CIS_Holders_filters';
+export const STORAGE_FILTERS_KEY = 'CIS_Holders_filters';
 export enum COLLECTIONS_NAME {
   PLACES = 'places',
   CATEGORY = 'categories',
@@ -20,3 +20,4 @@ export const STORAGE_PATHS = {
     return `/placeimage/${fileName}`;
   }
 };
+export const errorMessageRequired = 'This field is required';

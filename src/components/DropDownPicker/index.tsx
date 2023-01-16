@@ -7,6 +7,8 @@ import { openModal } from 'store/slices/modal';
 import { DropDownOptions } from 'components/DropDownOptions';
 import { Controller, useFormContext } from 'react-hook-form';
 import ErrorWrapper from 'components/ErrorWrapper';
+import { defaultHelperText } from 'components/DropDownPicker/constants';
+import { errorMessageRequired } from 'constants/index';
 
 export const DropPicker = <T,>({
   items,
@@ -16,7 +18,7 @@ export const DropPicker = <T,>({
   renderKey,
   helpedText
 }: DropPickerProps<T>) => {
-  const showHelpedText = helpedText || 'Need to select';
+  const showHelpedText = helpedText || defaultHelperText;
   const dispatch = useDispatch();
   const { setValue: setFormValue, control } = useFormContext();
   const handleSetValue = (item: T | number | string) => {
@@ -45,10 +47,8 @@ export const DropPicker = <T,>({
       rules={{ required: true }}
       render={({ field: { value: type }, fieldState: { error } }) => {
         return (
-          <View
-            style={{ flexDirection: 'column', justifyContent: 'flex-end', position: 'relative' }}
-          >
-            <ErrorWrapper error={error && !type} message="This field is required" label="Type">
+          <View style={styles.container}>
+            <ErrorWrapper error={error && !type} message={errorMessageRequired} label="Type">
               <TouchableHighlight
                 style={[styles.pickerItemWrapper, styles.pickerItemWrapperBackground]}
                 onPress={handleOpenList}

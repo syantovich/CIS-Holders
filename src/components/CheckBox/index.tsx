@@ -1,10 +1,10 @@
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { CheckBoxProps } from 'components/CheckBox/types';
 import { styles } from 'components/CheckBox/styles';
 
-const CheckBox = ({ children, action, isChecked, isStrict }: CheckBoxProps) => {
+const CheckBox = memo(({ children, action, isChecked, isStrict }: CheckBoxProps) => {
   const [isCheckedState, setIsCheckedState] = useState(!!isChecked);
   const handleCheck = () => {
     if (!isStrict) {
@@ -27,5 +27,7 @@ const CheckBox = ({ children, action, isChecked, isStrict }: CheckBoxProps) => {
       {children}
     </TouchableOpacity>
   );
-};
+});
+
+CheckBox.displayName = 'CheckBox';
 export default CheckBox;

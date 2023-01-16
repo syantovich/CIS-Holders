@@ -6,11 +6,13 @@ export type setFiltersActions = {
   payload: FilteredFieldsType;
 };
 
-type initialStateType = {
+export type FiltersStateType = {
   arrayToFilter: string[];
   orderBy: OrderByType;
+  isLoading: boolean;
 };
-const initialState: initialStateType = {
+const initialState: FiltersStateType = {
+  isLoading: false,
   orderBy: { value: VALUES_ORDER.NAME, direction: DIRECTION_SORT.DESC },
   arrayToFilter: []
 };
@@ -19,10 +21,13 @@ const filtersSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    checkFilters(state, actions: setFiltersActions) {},
+    checkFilters(state) {
+      state.isLoading = true;
+    },
     setFilters: (state, actions: setFiltersActions) => {
       state.arrayToFilter = actions.payload.arrayToFilter;
       state.orderBy = actions.payload.orderBy;
+      state.isLoading = false;
     }
   }
 });

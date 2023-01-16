@@ -1,16 +1,11 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BOTTOM_PAGES, PAGES_NAVIGATOR } from 'router/constants';
 
 export type RootTabsParamsList = {
-  Services: undefined;
-  Map: undefined;
-  Add: undefined;
+  [BOTTOM_PAGES.SERVICES]: undefined;
+  [BOTTOM_PAGES.MAP]: undefined;
+  [BOTTOM_PAGES.ADD]: undefined;
 };
 export type RootDrawerStackList = {
-  'About us': undefined;
-  Home: undefined;
+  [PAGES_NAVIGATOR.ANOTHER]: undefined;
+  [PAGES_NAVIGATOR.HOME]: undefined;
 };
-
-export type ServicesPageProps = NativeStackScreenProps<RootTabsParamsList, 'Services'>;
-export type MapPageProps = NativeStackScreenProps<RootTabsParamsList, 'Map'>;
-export type AddPageProps = NativeStackScreenProps<RootTabsParamsList, 'Add'>;
-export type AboutUsProps = NativeStackScreenProps<RootDrawerStackList, 'About us'>;

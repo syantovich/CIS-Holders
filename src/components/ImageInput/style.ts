@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   inputImageWrapper: {
@@ -30,7 +30,12 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1
-  }
+  },
+  modalImage: {
+    width: Dimensions.get('screen').width - 50,
+    height: Dimensions.get('screen').height - 150
+  },
+  deleteImage: { display: 'flex', justifyContent: 'center' }
 });
 
 export default styles;

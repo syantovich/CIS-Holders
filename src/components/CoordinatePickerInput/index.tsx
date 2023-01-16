@@ -8,7 +8,7 @@ import IconsFont from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from 'store/slices/modal';
 import CustomMap from 'components/CustomMap';
-import { RootStateType } from 'src/store';
+import { RootStateType } from 'store/index';
 import CustomTextInput from 'components/CustomTextInput';
 import styles from 'components/CoordinatePickerInput/style';
 import { EnumCoordinates } from 'components/CoordinatePickerInput/types';
@@ -17,9 +17,13 @@ import { useFormContext } from 'react-hook-form';
 import { CoordinatesType } from 'types/types';
 
 export const CoordinatePickerInput = () => {
-  const { textCoordinates } = useSelector((state: RootStateType) => state.coordinates);
+  const { textCoordinates, coordinates } = useSelector((state: RootStateType) => state.coordinates);
+  const { places } = useSelector((state: RootStateType) => state.places);
   const dispatch = useDispatch();
   const { setValue } = useFormContext();
+
+  const valueLongitude = `${textCoordinates?.longitude || ''}`;
+  const valueLatitude = `${textCoordinates?.latitude || ''}`;
 
   const handleChange =
     (type: EnumCoordinates) => (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
@@ -44,7 +48,7 @@ export const CoordinatePickerInput = () => {
     dispatch(
       openModal({
         children: (
-          <View style={{ width: 300, height: 300, marginBottom: 40 }}>
+          <View style={styles.wrapperMap}>
             <CustomMap isChoose={true} actionAfterSave={handleActionAfterSave} />
           </View>
         )
@@ -60,14 +64,14 @@ export const CoordinatePickerInput = () => {
           nameToControl="coordinates.longitude"
           onChange={handleChange(EnumCoordinates.long)}
           style={styles.input}
-          value={`${textCoordinates?.longitude || ''}`}
+          value={valueLongitude}
         />
         <CustomTextInput
           label="Latitude"
           keyboardType="number-pad"
           nameToControl="coordinates.latitude"
           onChange={handleChange(EnumCoordinates.lat)}
-          value={`${textCoordinates?.latitude || ''}`}
+          value={valueLatitude}
         />
       </View>
       <TouchableOpacity style={styles.wrapperIcon} onPress={handlePickCoordinate}>

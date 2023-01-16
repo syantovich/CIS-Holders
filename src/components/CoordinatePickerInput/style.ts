@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
   wrapperInputs: {
     flex: 1,
     marginRight: 2
-  }
+  },
+  wrapperMap: { width: 300, height: 300, marginBottom: 40 }
 });
 
 export default styles;

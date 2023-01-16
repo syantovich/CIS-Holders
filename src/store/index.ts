@@ -7,6 +7,7 @@ import modalReducer from 'store/slices/modal';
 import filtersReducer from 'store/slices/filters';
 import aboutUsInfoReducer from 'store/slices/aboutUsInfo';
 import { createRootSaga } from 'store/sagas';
+import imageUploadReducer from 'store/slices/imageUpload';
 
 const saga = createSagaMiddleware();
 
@@ -17,7 +18,8 @@ const store = configureStore({
     coordinates: coordinatesReducer,
     modal: modalReducer,
     filters: filtersReducer,
-    aboutUs: aboutUsInfoReducer
+    aboutUs: aboutUsInfoReducer,
+    imageUpload: imageUploadReducer
   },
   middleware: [saga]
 });

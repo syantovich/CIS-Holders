@@ -1,20 +1,22 @@
 import CustomTextInput from 'components/CustomTextInput';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootStateType } from 'src/store';
+import { RootStateType } from 'store/index';
 import { DropPicker } from 'components/DropDownPicker';
 import ImageInput from 'components/ImageInput';
 import { CoordinatePickerInput } from 'components/CoordinatePickerInput';
 import { Button, ScrollView, View } from 'react-native';
-import styles from 'components/FormForAdding/styles';
+import styles from 'components/AddingForm/styles';
 import { useForm, FormProvider } from 'react-hook-form';
-import { IPlaceItem } from 'types/types';
 import { resetCoords } from 'store/slices/coordinates';
 import { addPlace } from 'store/slices/places';
+import { IPlaceItem } from 'types/types';
+import { FormStateType } from 'components/AddingForm/types';
+import { removedImageSuccess } from 'store/slices/imageUpload';
 
-export const FormForAdding = () => {
+const AddingForm = () => {
   const { categories, isLoading } = useSelector((state: RootStateType) => state.categories);
-  const filters = useSelector((state: RootStateType) => state.filters);
-  const defaultValues: IPlaceItem = {
+
+  const defaultValues: FormStateType = {
     coordinates: { latitude: undefined, longitude: undefined },
     image: { uri: '' },
     type: '',
@@ -26,28 +28,29 @@ export const FormForAdding = () => {
   const clearForm = () => {
     methods.reset();
     dispatch(resetCoords());
+    dispatch(removedImageSuccess());
   };
-  const handleSubmit = (data: IPlaceItem) => {
-    dispatch(addPlace({ item: data, filters }));
-    clearForm();
+  const handleSubmit = (data: FormStateType) => {
+    if (data.coordinates.latitude && data.coordinates.longitude) {
+      const addedPlace: IPlaceItem = {
+        ...data,
+        coordinates: { latitude: data.coordinates.latitude, longitude: data.coordinates.longitude }
+      };
+      dispatch(addPlace(addedPlace));
+      clearForm();
+    }
   };
   return (
     <FormProvider {...methods}>
       <ScrollView>
         <View style={styles.wrapperForm}>
           <View style={styles.item}>
-            <CustomTextInput
-              placeholder="Name of the place"
-              maxLength={100}
-              nameToControl="name"
-              label="Name"
-            />
+            <CustomTextInput maxLength={100} nameToControl="name" label="Name" />
           </View>
 
           <View style={styles.item}>
             <CustomTextInput
               label="Description"
-              placeholder="Description"
               nameToControl="description"
               maxLength={500}
               numberOfLines={4}
@@ -63,8 +66,9 @@ export const FormForAdding = () => {
             <CoordinatePickerInput />
           </View>
         </View>
-        <Button title={'submit'} onPress={methods.handleSubmit(handleSubmit)} />
+        <Button title={'Submit'} onPress={methods.handleSubmit(handleSubmit)} />
       </ScrollView>
     </FormProvider>
   );
 };
+export default AddingForm;

@@ -1,8 +1,8 @@
 import { CategoryListType, IPlaceType, ISlideInfo } from 'types/types';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
-class ProcessDataClass {
-  placesByType(places: FirebaseFirestoreTypes.QuerySnapshot) {
+export class ProcessDataMappers {
+  static placesByType(places: FirebaseFirestoreTypes.QuerySnapshot) {
     const results: CategoryListType[] = [];
     const storeIndex: { [key: string]: number } = {};
     places.forEach((e: any, index) => {
@@ -18,7 +18,7 @@ class ProcessDataClass {
     return results;
   }
 
-  getArrayCategoriesByName(categories: FirebaseFirestoreTypes.QuerySnapshot) {
+  static getArrayCategoriesByName(categories: FirebaseFirestoreTypes.QuerySnapshot) {
     const nameCategories: string[] = [];
     categories.forEach((dataSnapshot) => {
       nameCategories.push(dataSnapshot.data().name);
@@ -26,7 +26,7 @@ class ProcessDataClass {
     return nameCategories;
   }
 
-  getAboutUsArray(sliders: FirebaseFirestoreTypes.QuerySnapshot) {
+  static getAboutUsArray(sliders: FirebaseFirestoreTypes.QuerySnapshot) {
     const result: ISlideInfo[] = [];
     sliders.forEach((dataSnapshot) => {
       const data = dataSnapshot.data() as ISlideInfo;
@@ -35,5 +35,3 @@ class ProcessDataClass {
     return result;
   }
 }
-const processingData = new ProcessDataClass();
-export default processingData;

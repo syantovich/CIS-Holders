@@ -1,15 +1,19 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
-import db from 'services/Db';
-import processingData from 'services/processData';
-import { FilteredFieldsType } from 'types/types';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { getPlacesFailure, getPlacesFetch, getPlacesSuccess } from 'store/slices/places';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { FiltersStateType } from 'store/slices/filters';
+import { RootStateType } from 'store/index';
+import { DataProvider } from 'services/DataProvider';
+import { ProcessDataMappers } from '../../utils/mappers/processData';
 
-function* workerGetPlacesFetch({ payload: filters }: { payload: FilteredFieldsType }) {
+function* workerGetPlacesFetch() {
   try {
-    const places: FirebaseFirestoreTypes.QuerySnapshot = yield call(db.getPlaces, filters);
-    const formattedPlaces = processingData.placesByType(places);
-    yield put(getPlacesSuccess(formattedPlaces));
+    const filters: FiltersStateType = yield select((state: RootStateType) => state.filters);
+    const places: FirebaseFirestoreTypes.QuerySnapshot = yield call(
+      DataProvider.getPlaces,
+      filters
+    );
+    yield put(getPlacesSuccess(ProcessDataMappers.placesByType(places)));
   } catch (e) {
     console.log(e);
     yield put(getPlacesFailure());

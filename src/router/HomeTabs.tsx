@@ -4,30 +4,27 @@ import AddScene from 'scenes/AddScene';
 import MapScene from 'scenes/MapScene';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { RootTabsParamsList } from 'router/types';
+import { BOTTOM_PAGES } from 'router/constants';
 
-const Tabs = createBottomTabNavigator<RootTabsParamsList>();
+const { Navigator, Screen } = createBottomTabNavigator<RootTabsParamsList>();
 
 export const HomeTabs = () => {
   return (
-    <Tabs.Navigator
+    <Navigator
+      initialRouteName={BOTTOM_PAGES.SERVICES}
       screenOptions={({ route }) => ({
-        headerStyle: {
-          backgroundColor: '#9AC4F8'
-        },
-        headerTintColor: 'white',
-        headerBackTitle: 'Back',
         tabBarIcon: ({ color, size }) => {
           let icon = 'plus-circle';
           switch (route.name) {
-            case 'Services': {
+            case BOTTOM_PAGES.SERVICES: {
               icon = 'list';
               break;
             }
-            case 'Map': {
+            case BOTTOM_PAGES.MAP: {
               icon = 'map-pin';
               break;
             }
-            case 'Add': {
+            case BOTTOM_PAGES.ADD: {
               icon = 'plus-circle';
               break;
             }
@@ -38,9 +35,13 @@ export const HomeTabs = () => {
         tabBarInactiveTintColor: 'gray'
       })}
     >
-      <Tabs.Screen name="Services" component={ServicesScene} options={{ headerShown: false }} />
-      <Tabs.Screen
-        name="Add"
+      <Screen
+        name={BOTTOM_PAGES.SERVICES}
+        component={ServicesScene}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name={BOTTOM_PAGES.ADD}
         component={AddScene}
         options={{
           title: '',
@@ -48,7 +49,7 @@ export const HomeTabs = () => {
           headerShown: false
         }}
       />
-      <Tabs.Screen name="Map" component={MapScene} options={{ headerShown: false }} />
-    </Tabs.Navigator>
+      <Screen name={BOTTOM_PAGES.MAP} component={MapScene} options={{ headerShown: false }} />
+    </Navigator>
   );
 };

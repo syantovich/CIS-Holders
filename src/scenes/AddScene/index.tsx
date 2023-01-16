@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native';
-import { FormForAdding } from 'components/FormForAdding';
+import { View } from 'react-native';
+import AddingForm from 'components/AddingForm';
+import styles from 'scenes/AddScene/styles';
 
 function DetailsScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <FormForAdding />
+    <View style={styles.container}>
+      <AddingForm />
     </View>
   );
 }

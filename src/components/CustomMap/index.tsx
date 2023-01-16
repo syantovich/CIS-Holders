@@ -2,37 +2,55 @@ import { CustomMapProps } from 'components/CustomMap/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStateType } from 'src/store';
 import MapView, { Marker, MarkerDragStartEndEvent, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, SectionList, StyleSheet, View } from 'react-native';
 import { pickCoordinates, saveCoords } from 'store/slices/coordinates';
 import { closeModal } from 'store/slices/modal';
-import { ReactNode } from 'react';
+import styles from 'components/CustomMap/styles';
+import { useCallback, useMemo } from 'react';
 
 const CustomMap = ({ isChoose, actionAfterSave }: CustomMapProps) => {
-  const { places } = useSelector((state: RootStateType) => state.places);
+  const { places, isLoading } = useSelector((state: RootStateType) => state.places);
   const { coordinates } = useSelector((state: RootStateType) => state.coordinates);
   const dispatch = useDispatch();
+
+  const count = useMemo(() => places.reduce((acc, e) => acc + e.data.length, 0), [places]);
+
+  const placesList = useMemo(
+    () => (
+      <SectionList
+        initialNumToRender={count * 3}
+        sections={places}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item: { coordinates, name, id } }) => (
+          <Marker coordinate={coordinates} title={name} key={id} />
+        )}
+      />
+    ),
+    [places, count]
+  );
+
+  const coordinatePickedPlace = useMemo(() => {
+    if (coordinates) {
+      return {
+        latitude: +coordinates.latitude,
+        longitude: +coordinates.longitude
+      };
+    } else return coordinates;
+  }, [coordinates]);
 
   const handlePick = (e: MarkerDragStartEndEvent) => {
     if (isChoose) {
       dispatch(pickCoordinates(e.nativeEvent.coordinate));
     }
   };
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     dispatch(saveCoords());
     actionAfterSave && coordinates && actionAfterSave(coordinates);
     dispatch(closeModal());
-  };
+  }, [coordinates, actionAfterSave]);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column'
-      }}
-    >
+    <View style={styles.container}>
       <View style={StyleSheet.absoluteFillObject}>
         <MapView
           provider={PROVIDER_GOOGLE}
@@ -43,32 +61,11 @@ const CustomMap = ({ isChoose, actionAfterSave }: CustomMapProps) => {
           showsUserLocation
           onPress={handlePick}
         >
-          {places.reduce((acc: ReactNode[], group) => {
-            group.data.forEach((place) =>
-              acc.push(
-                <Marker
-                  coordinate={{
-                    latitude: (place.coordinates.latitude && +place.coordinates.latitude) || 0,
-                    longitude: (place.coordinates.longitude && +place.coordinates.longitude) || 0
-                  }}
-                  title={place.name}
-                  key={place.id}
-                />
-              )
-            );
-            return acc;
-          }, [])}
-          {coordinates && isChoose && (
-            <Marker
-              coordinate={{
-                latitude: +coordinates.latitude,
-                longitude: +coordinates.longitude
-              }}
-            />
-          )}
+          {!isLoading && placesList}
+          {coordinatePickedPlace && isChoose && <Marker coordinate={coordinatePickedPlace} />}
         </MapView>
       </View>
-      <View style={{ position: 'absolute', bottom: -40, right: 0 }}>
+      <View style={styles.wrapperSaveButton}>
         {isChoose && (
           <Button title="Save coordinates" disabled={!coordinates} onPress={handleSave} />
         )}

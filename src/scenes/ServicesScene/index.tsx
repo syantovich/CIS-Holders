@@ -9,10 +9,9 @@ import { checkFilters } from 'store/slices/filters';
 
 function ListScreen() {
   const { places, isLoading } = useSelector((state: RootStateType) => state.places);
-  const filters = useSelector((state: RootStateType) => state.filters);
   const dispatch = useDispatch();
   const fetchingData = async () => {
-    dispatch(checkFilters(filters));
+    dispatch(checkFilters());
   };
   useEffect(() => {
     fetchingData();
@@ -24,15 +23,8 @@ function ListScreen() {
         keyExtractor={(item) => item.id}
         renderItem={PlaceItem}
         renderSectionHeader={HeaderItem}
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={() => {
-              console.log('refreshing');
-              fetchingData();
-            }}
-          />
-        }
+        stickySectionHeadersEnabled
+        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={fetchingData} />}
         refreshing={true}
       />
     </View>

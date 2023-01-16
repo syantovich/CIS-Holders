@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  container: { flexDirection: 'column', justifyContent: 'flex-end', position: 'relative' },
   loading: {
     flex: 1,
     justifyContent: 'center',

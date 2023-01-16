@@ -1,103 +1,60 @@
-import { ActivityIndicator, Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-native';
 import IconsEntypo from 'react-native-vector-icons/Entypo';
 import IconsAnt from 'react-native-vector-icons/AntDesign';
 import styles from 'components/ImageInput/style';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { useState } from 'react';
-import { ImagePickerEnum } from 'components/ImageInput/types';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from 'store/slices/modal';
-import db from 'services/Db';
 import { Controller, useFormContext } from 'react-hook-form';
 import ErrorWrapper from 'components/ErrorWrapper';
+import { DEFAULT_TITLE } from 'components/ImageInput/constants';
+import { getImageUploadFetch, removeImageFetch } from 'store/slices/imageUpload';
+import { RootStateType } from 'store/index';
 
 const ImageInput = () => {
-  const [isUploading, setIsUploading] = useState(false);
-  const [fileName, setFileName] = useState<undefined | string>(undefined);
   const { control, setValue } = useFormContext();
+  const { isLoading, fileName, image } = useSelector((state: RootStateType) => state.imageUpload);
 
   const dispatch = useDispatch();
   const handleDelete = async () => {
-    if (fileName) {
-      await db.deleteImage(fileName);
-    }
-    setFileName(undefined);
-    setValue('image.uri', '');
+    dispatch(removeImageFetch());
   };
-  const handleResponse = async (response: ImagePickerResponse) => {
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.errorMessage) {
-      console.log('ImagePicker Error: ', response.errorMessage);
-    } else {
-      if (response.assets && response.assets[0].uri) {
-        try {
-          setIsUploading(true);
-          const newPath = await db.uploadImage(response.assets[0]);
-          if (newPath?.uri) {
-            setFileName(newPath.fileName);
-            setValue('image.uri', newPath.uri);
-          }
-          setIsUploading(false);
-        } catch (e) {
-          setIsUploading(false);
-          console.log(e);
-        }
-      }
-    }
+  const handleResponse = (response: ImagePickerResponse) => {
+    dispatch(getImageUploadFetch(response));
   };
-  const handleClickOnImage = (image: { uri: string }) => () => {
+  const handleClickOnImage = (image: { uri?: string }) => () => {
     if (image && image.uri) {
       dispatch(
         openModal({
-          children: (
-            <Image
-              source={image}
-              style={{
-                width: Dimensions.get('screen').width - 50,
-                height: Dimensions.get('screen').height - 150
-              }}
-            />
-          )
+          children: <Image source={image} style={styles.modalImage} />
         })
       );
     }
   };
-  const handleImagePick = (type: ImagePickerEnum) => async () => {
-    try {
-      switch (type) {
-        case ImagePickerEnum.camera: {
-          await launchCamera(
-            { mediaType: 'photo', cameraType: 'back', saveToPhotos: true },
-            handleResponse
-          );
-          break;
-        }
-        case ImagePickerEnum.library: {
-          await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, handleResponse);
-        }
-      }
-    } catch (e) {
-      //
-    }
-  };
+  const handlePickImageFromCamera = async () =>
+    launchCamera({ mediaType: 'photo', cameraType: 'back', saveToPhotos: true }, handleResponse);
+  const handlePickImageFromLibrary = async () =>
+    launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, handleResponse);
+
+  useEffect(() => {
+    setValue('image', image.uri);
+  }, [image.uri, fileName]);
+
   return (
     <Controller
       control={control}
       name="image"
-      render={({ field: { value: image }, fieldState: { error } }) => {
+      render={({ fieldState: { error } }) => {
         return (
           <ErrorWrapper error={error} label="Image">
-            {!isUploading ? (
+            {!isLoading ? (
               image.uri && (
                 <View style={styles.imageWrapper}>
                   <TouchableOpacity style={styles.image} onPress={handleClickOnImage(image)}>
                     <Image style={styles.image} source={image} />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={handleDelete}
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                  >
+                  <TouchableOpacity onPress={handleDelete} style={styles.deleteImage}>
                     <IconsAnt name="delete" color="#000" style={styles.imageSize} />
                   </TouchableOpacity>
                 </View>
@@ -107,13 +64,13 @@ const ImageInput = () => {
             )}
             <View style={styles.inputImageWrapper}>
               <View style={styles.fileName}>
-                <Text style={styles.fileNameTextStyle}>{fileName || 'Please select file'}</Text>
+                <Text style={styles.fileNameTextStyle}>{fileName || DEFAULT_TITLE}</Text>
               </View>
               <View style={styles.icons}>
-                <TouchableOpacity onPress={handleImagePick(ImagePickerEnum.camera)}>
+                <TouchableOpacity onPress={handlePickImageFromCamera}>
                   <IconsEntypo name="camera" style={[styles.fileNameTextStyle, styles.imageSize]} />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleImagePick(ImagePickerEnum.library)}>
+                <TouchableOpacity onPress={handlePickImageFromLibrary}>
                   <IconsAnt name="picture" style={[styles.fileNameTextStyle, styles.imageSize]} />
                 </TouchableOpacity>
               </View>

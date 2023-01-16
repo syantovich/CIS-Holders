@@ -1,15 +1,14 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import db from 'services/Db';
-import processingData from 'services/processData';
+import { ProcessDataMappers } from '../../utils/mappers/processData';
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 import { getAboutFailure, getAboutFetch, getAboutSuccess } from 'store/slices/aboutUsInfo';
 import RNBootSplash from 'react-native-bootsplash';
+import { DataProvider } from 'services/DataProvider';
 
 function* workerGetSlidersFetch() {
   try {
-    const infos: FirebaseFirestoreTypes.QuerySnapshot = yield call(db.getAboutUsInfo);
-    const formattedSliders = processingData.getAboutUsArray(infos);
-    yield put(getAboutSuccess(formattedSliders));
+    const infos: FirebaseFirestoreTypes.QuerySnapshot = yield call(DataProvider.getAboutUsInfo);
+    yield put(getAboutSuccess(ProcessDataMappers.getAboutUsArray(infos)));
     yield RNBootSplash.hide({ fade: true, duration: 500 });
   } catch (e) {
     console.log(e);

@@ -6,7 +6,7 @@ export interface IPlaceItem {
   name: string;
   description: string;
   image: { uri?: string };
-  coordinates: { latitude?: number; longitude?: number };
+  coordinates: { latitude: number; longitude: number };
   type: string;
 }
 export interface IPlaceType extends IPlaceItem {
