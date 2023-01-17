@@ -1,19 +1,19 @@
-import { Image, Text, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { PlaceItemProps } from 'components/PlaceItem/types';
 import styles from 'components/PlaceItem/styles';
+import { useDispatch } from 'react-redux';
+import { openModal } from 'store/slices/modal';
+import PlaceInfoModal from 'components/PlaceInfoModal';
 
 const PlaceItem = ({ item }: PlaceItemProps) => {
+  const dispatch = useDispatch();
+  const handlePress = () => {
+    dispatch(openModal({ children: <PlaceInfoModal place={item} /> }));
+  };
   return (
-    <View style={styles.item}>
-      <Text>{item.name}</Text>
-      <Text>{item.description}</Text>
-      {item.image && item.image.uri && (
-        <Image style={{ width: '100%', height: 100 }} source={item.image} />
-      )}
-      <Text>{item.coordinates.latitude}</Text>
-      <Text>{item.coordinates.longitude}</Text>
-      <Text>{item.date.toDate().toISOString()}</Text>
-    </View>
+    <TouchableOpacity style={styles.item} onPress={handlePress}>
+      <Text style={styles.text}>{item.name}</Text>
+    </TouchableOpacity>
   );
 };
 export default PlaceItem;

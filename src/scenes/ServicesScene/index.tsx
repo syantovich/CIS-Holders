@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootStateType } from 'src/store';
 import PlaceItem from 'components/PlaceItem';
 import { checkFilters } from 'store/slices/filters';
+import ListEmpty from 'components/ListEmpty';
 
 function ListScreen() {
   const { places, isLoading } = useSelector((state: RootStateType) => state.places);
@@ -21,6 +22,7 @@ function ListScreen() {
       <SectionList
         sections={places}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={<ListEmpty />}
         renderItem={PlaceItem}
         renderSectionHeader={HeaderItem}
         stickySectionHeadersEnabled

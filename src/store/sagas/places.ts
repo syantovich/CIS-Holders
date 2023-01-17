@@ -15,7 +15,7 @@ function* workerGetPlacesFetch() {
     );
     yield put(getPlacesSuccess(ProcessDataMappers.placesByType(places)));
   } catch (e) {
-    console.log(e);
+    console.log(e, '1');
     yield put(getPlacesFailure());
   }
 }

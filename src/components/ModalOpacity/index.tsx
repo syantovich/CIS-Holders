@@ -1,4 +1,4 @@
-import { Modal, View } from 'react-native';
+import { Modal, TouchableOpacity, Pressable, GestureResponderEvent } from 'react-native';
 import styles from 'components/ModalOpacity/styles';
 import IconsAnt from 'react-native-vector-icons/AntDesign';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,9 @@ export const ModalOpacity = () => {
     onRequestClose && onRequestClose();
     dispatch(closeModal());
   };
+  const handleCancelClose = (e: GestureResponderEvent) => {
+    e.stopPropagation();
+  };
   return (
     <Modal
       visible={isOpen && !!children}
@@ -19,12 +22,12 @@ export const ModalOpacity = () => {
       transparent={true}
       onRequestClose={handleClose}
     >
-      <View style={styles.container}>
-        <View style={styles.wrapper}>
+      <TouchableOpacity style={styles.container} onPress={handleClose}>
+        <Pressable style={styles.wrapper} onPress={handleCancelClose}>
           <IconsAnt name="closecircle" style={styles.closeIcon} size={20} onPress={handleClose} />
           {children}
-        </View>
-      </View>
+        </Pressable>
+      </TouchableOpacity>
     </Modal>
   );
 };

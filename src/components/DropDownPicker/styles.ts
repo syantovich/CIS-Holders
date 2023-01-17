@@ -30,6 +30,6 @@ export const styles = StyleSheet.create({
   },
   list: {
     width: 300,
-    height: 90
+    height: 150
   }
 });

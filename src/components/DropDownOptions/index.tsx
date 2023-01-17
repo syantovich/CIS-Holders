@@ -13,11 +13,15 @@ export const DropDownOptions = <T,>({
   setValue
 }: DropDownOptionsProps<T>) => {
   const showValue = (item: T) => (renderValue ? renderValue(item) : item);
-  const showItem = (item: T) => (renderItem ? renderItem(item) : item);
+  const showItem = (item: T) =>
+    renderItem ? (
+      renderItem(item)
+    ) : (
+      <Text style={[styles.pickerItemColor, styles.paddingItem]}>{`${item}`}</Text>
+    );
   const showKey = (item: T) => (renderKey ? renderKey(item) : item);
 
   const dispatch = useDispatch();
-
   const handleSetValue = (item: T | string | number) => () => {
     setValue(item);
     dispatch(closeModal());
@@ -40,9 +44,7 @@ export const DropDownOptions = <T,>({
             style={[styles.pickerItemWrapper, styles.pickerItemWrapperBackground]}
             onPress={handleSetValue(showValue(item))}
           >
-            <Text style={[styles.pickerItemColor, styles.paddingItem]}>
-              {renderItem ? renderItem(item) : `${item}`}
-            </Text>
+            {showItem(item)}
           </TouchableHighlight>
         )}
       />

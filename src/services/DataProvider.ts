@@ -38,7 +38,7 @@ export class DataProvider {
         const downloadUrl = await reference.getDownloadURL();
         return { uri: downloadUrl, fileName: asset.fileName };
       } catch (e) {
-        console.log(e);
+        console.log(e, 2);
         return { uri: undefined, fileName: undefined };
       }
     }

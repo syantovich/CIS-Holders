@@ -32,26 +32,18 @@ const ChooseType = () => {
     [fields]
   );
 
-  return (
-    <>
-      {isLoading && <ActivityIndicator />}
-      {!isLoading && categories && (
-        <FlatList
-          data={categories}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => {
-            return (
-              <CheckBox
-                action={handleToAdd(item)}
-                isChecked={getValues('arrayToFilter').includes(item)}
-              >
-                <Text style={styles.textItem}>{item}</Text>
-              </CheckBox>
-            );
-          }}
-        />
+  return isLoading ? (
+    <ActivityIndicator />
+  ) : (
+    <FlatList
+      data={categories}
+      keyExtractor={(item) => item}
+      renderItem={({ item }) => (
+        <CheckBox action={handleToAdd(item)} isChecked={getValues('arrayToFilter').includes(item)}>
+          <Text style={styles.textItem}>{item}</Text>
+        </CheckBox>
       )}
-    </>
+    />
   );
 };
 

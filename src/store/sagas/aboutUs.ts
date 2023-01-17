@@ -11,7 +11,7 @@ function* workerGetSlidersFetch() {
     yield put(getAboutSuccess(ProcessDataMappers.getAboutUsArray(infos)));
     yield RNBootSplash.hide({ fade: true, duration: 500 });
   } catch (e) {
-    console.log(e);
+    console.log(e, 3);
     yield put(getAboutFailure());
   }
 }

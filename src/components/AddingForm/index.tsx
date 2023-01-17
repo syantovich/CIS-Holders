@@ -43,30 +43,32 @@ const AddingForm = () => {
   return (
     <FormProvider {...methods}>
       <ScrollView>
-        <View style={styles.wrapperForm}>
-          <View style={styles.item}>
-            <CustomTextInput maxLength={100} nameToControl="name" label="Name" />
-          </View>
+        <View style={styles.container}>
+          <View style={styles.wrapperForm}>
+            <View style={styles.item}>
+              <CustomTextInput maxLength={100} nameToControl="name" label="Name" />
+            </View>
 
-          <View style={styles.item}>
-            <CustomTextInput
-              label="Description"
-              nameToControl="description"
-              maxLength={500}
-              numberOfLines={4}
-            />
+            <View style={styles.item}>
+              <CustomTextInput
+                label="Description"
+                nameToControl="description"
+                maxLength={500}
+                numberOfLines={4}
+              />
+            </View>
+            <View style={styles.item}>
+              <DropPicker items={categories} isLoading={isLoading} />
+            </View>
+            <View style={styles.item}>
+              <ImageInput />
+            </View>
+            <View style={styles.item}>
+              <CoordinatePickerInput />
+            </View>
           </View>
-          <View style={styles.item}>
-            <DropPicker items={categories} isLoading={isLoading} />
-          </View>
-          <View style={styles.item}>
-            <ImageInput />
-          </View>
-          <View style={styles.item}>
-            <CoordinatePickerInput />
-          </View>
+          <Button title={'Submit'} onPress={methods.handleSubmit(handleSubmit)} />
         </View>
-        <Button title={'Submit'} onPress={methods.handleSubmit(handleSubmit)} />
       </ScrollView>
     </FormProvider>
   );

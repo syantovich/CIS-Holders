@@ -17,8 +17,7 @@ import { useFormContext } from 'react-hook-form';
 import { CoordinatesType } from 'types/types';
 
 export const CoordinatePickerInput = () => {
-  const { textCoordinates, coordinates } = useSelector((state: RootStateType) => state.coordinates);
-  const { places } = useSelector((state: RootStateType) => state.places);
+  const { textCoordinates } = useSelector((state: RootStateType) => state.coordinates);
   const dispatch = useDispatch();
   const { setValue } = useFormContext();
 
