@@ -10,7 +10,7 @@ import { DataProvider } from 'services/DataProvider';
 function* workerUploadImageFetch({ payload: response }: { payload: ImagePickerResponse }) {
   if (response.assets && response.assets[0].uri) {
     try {
-      const newPath: { uri?: string; fileName?: string } = yield call(
+      const newPath: { uri: string; fileName?: string } = yield call(
         DataProvider.uploadImage,
         response.assets[0]
       );

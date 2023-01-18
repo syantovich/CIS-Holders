@@ -38,7 +38,7 @@ const ImageInput = () => {
     launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 }, handleResponse);
 
   useEffect(() => {
-    setValue('image', image.uri);
+    setValue('image', image);
   }, [image.uri, fileName]);
 
   return (

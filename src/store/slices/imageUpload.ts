@@ -3,12 +3,12 @@ import { ImagePickerResponse } from 'react-native-image-picker';
 
 export type stateImageUploadType = {
   fileName?: string;
-  image: { uri?: string };
+  image: { uri: string };
   isLoading: boolean;
 };
 const initialState: stateImageUploadType = {
   fileName: undefined,
-  image: { uri: undefined },
+  image: { uri: '' },
   isLoading: false
 };
 
@@ -24,10 +24,10 @@ const imagePickSlice = createSlice({
     },
     removedImageSuccess: (state) => {
       state.fileName = undefined;
-      state.image.uri = undefined;
+      state.image = { uri: '' };
       state.isLoading = false;
     },
-    getURIImageSuccess: (state, actions: { payload: { uri?: string; fileName?: string } }) => {
+    getURIImageSuccess: (state, actions: { payload: { uri: string; fileName?: string } }) => {
       state.fileName = actions.payload.fileName;
       state.image = { uri: actions.payload.uri };
       state.isLoading = false;
