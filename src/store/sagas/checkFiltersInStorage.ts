@@ -5,11 +5,13 @@ import DateAsyncStorageProvider from 'services/DateAsyncStorageProvider';
 import { getCategoriesFetch } from 'store/slices/categories';
 import { FilteredFieldsType } from 'types/types';
 import { getAboutFetch } from 'store/slices/aboutUsInfo';
+import RNBootSplash from 'react-native-bootsplash';
 
 function* workerCheckFilters() {
   const filtersStorage: null | FilteredFieldsType = yield call(
     DateAsyncStorageProvider.getMemoizedFilters
   );
+  yield RNBootSplash.hide({ fade: true, duration: 500 });
   if (filtersStorage) {
     yield put(setFilters(filtersStorage));
   } else {
